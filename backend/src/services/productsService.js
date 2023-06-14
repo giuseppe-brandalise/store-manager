@@ -7,6 +7,7 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const modelResponse = await productsModel.getById(id);
+  console.log('service:', modelResponse);
   if (!modelResponse) {
     return 'product not found';
   }
