@@ -1,9 +1,10 @@
 const { expect } = require('chai');
 const sinon = require('sinon');
+
 const { productsModel } = require('../../../src/models/index');
+const connection = require('../../../src/models/connection');
 
 const { productsListMock, productIdMock } = require('./mocks/productsMocks');
-const connection = require('../../../src/models/connection');
 
 describe('Unit tests for the model of products', function () {
   afterEach(function () {

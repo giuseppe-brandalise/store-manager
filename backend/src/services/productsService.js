@@ -1,4 +1,4 @@
-const productsModel = require('../models/productsModel');
+const { productsModel } = require('../models/index');
 
 const getAll = async () => {
   const modelResponse = await productsModel.getAll();
@@ -7,7 +7,6 @@ const getAll = async () => {
 
 const getById = async (id) => {
   const modelResponse = await productsModel.getById(id);
-  console.log('service:', modelResponse);
   if (!modelResponse) {
     return 'product not found';
   }
