@@ -4,7 +4,7 @@ const sinon = require('sinon');
 const { salesModel } = require('../../../src/models/index');
 const connection = require('../../../src/models/connection');
 
-const { salesMockList, salesMockId, addedSale} = require('./mocks/salesMocks');
+const { salesMockList, salesMockId, addedSale } = require('./mocks/salesMocks');
 
 describe('Unit tests for the model of products', function () {
   afterEach(function () {
