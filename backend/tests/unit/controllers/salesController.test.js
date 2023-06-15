@@ -58,7 +58,7 @@ describe('Unit tests for the controller of sales', function () {
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith(addedSale);
   });
-  it('should not return the information of the new added sale when there in no productId', async function () {
+  it('should not allow the adding process when there in no productId', async function () {
     const res = {};
     const req = {
       body: [
@@ -78,7 +78,7 @@ describe('Unit tests for the controller of sales', function () {
     expect(res.status).to.have.been.calledWith(400);
     expect(res.json).to.have.been.calledWith({ message: '"productId" is required' });
   });
-  it('should not return the information of the new added sale when there in no quantity', async function () {
+  it('should not allow the adding process when there in no quantity', async function () {
     const res = {};
     const req = {
       body: [
@@ -98,7 +98,7 @@ describe('Unit tests for the controller of sales', function () {
     expect(res.status).to.have.been.calledWith(400);
     expect(res.json).to.have.been.calledWith({ message: '"quantity" is required' });
   });
-  it('should not return the information of the new added sale when quantity is zero or bellow', async function () {
+  it('should not allow the adding process when quantity is zero or bellow', async function () {
     const res = {};
     const req = {
       body: [
@@ -117,6 +117,7 @@ describe('Unit tests for the controller of sales', function () {
     res.json = sinon.stub().returns();
     await salesMiddleware.verifyAddSale(req, res, next);
     expect(res.status).to.have.been.calledWith(422);
-    expect(res.json).to.have.been.calledWith({ message: '"quantity" must be greater than or equal to 1' });
+    expect(res.json).to.have.been
+      .calledWith({ message: '"quantity" must be greater than or equal to 1' });
   });
 });
