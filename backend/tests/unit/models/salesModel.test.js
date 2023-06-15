@@ -4,7 +4,7 @@ const sinon = require('sinon');
 const { salesModel } = require('../../../src/models/index');
 const connection = require('../../../src/models/connection');
 
-const { salesMockList, salesMockId } = require('./mocks/salesMocks');
+const { salesMockList, salesMockId, addedSale} = require('./mocks/salesMocks');
 
 describe('Unit tests for the model of products', function () {
   afterEach(function () {
@@ -19,5 +19,20 @@ describe('Unit tests for the model of products', function () {
     sinon.stub(connection, 'execute').resolves([salesMockId]);
     const result = await salesModel.getById(1);
     expect(result).to.be.deep.equal(salesMockId);
+  });
+  it('should return the information of the new added product', async function () {
+    const newSale = [
+      {
+        productId: 1,
+        quantity: 1,
+      },
+      {
+        productId: 2,
+        quantity: 5,
+      },
+    ];
+    sinon.stub(connection, 'execute').resolves([{ insertId: 3 }]);
+    const result = await salesModel.addSale(newSale);
+    expect(result).to.be.deep.equal(addedSale);
   });
 });
