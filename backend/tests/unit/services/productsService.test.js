@@ -4,7 +4,7 @@ const sinon = require('sinon');
 const { productsService } = require('../../../src/services/index');
 const { productsModel } = require('../../../src/models/index');
 
-const { productsListMock, productIdMock } = require('./mocks/productsMocks');
+const { productsListMock, productIdMock, productAdded } = require('./mocks/productsMocks');
 
 describe('Unit tests for the service of products', function () {
   afterEach(function () {
@@ -19,5 +19,10 @@ describe('Unit tests for the service of products', function () {
     sinon.stub(productsModel, 'getById').resolves(productIdMock);
     const result = await productsService.getById(1);
     expect(result).to.be.deep.equal(productIdMock);
+  });
+  it('should return the information of the new added product', async function () {
+    sinon.stub(productsModel, 'addProduct').resolves(productAdded);
+    const result = await productsService.addProduct('ProdutoX');
+    expect(result).to.be.deep.equal(productAdded);
   });
 });
