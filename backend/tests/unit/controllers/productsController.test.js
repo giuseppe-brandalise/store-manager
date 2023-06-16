@@ -66,4 +66,15 @@ describe('Unit tests for the controller of products', function () {
     expect(res.status).to.have.been.calledWith(200);
     expect(res.json).to.have.been.calledWith(productModded);
   });
+  it('should return a 204 status when deleting a product', async function () {
+    const res = {};
+    const req = {
+      params: 1,
+    };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(productsService, 'deleteProduct').resolves('done');
+    await productsController.deleteProduct(req, res);
+    expect(res.status).to.have.been.calledWith(204);
+  });
 });

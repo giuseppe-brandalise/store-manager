@@ -6,7 +6,7 @@ const connection = require('../../../src/models/connection');
 
 const { salesMockList, salesMockId, addedSale } = require('./mocks/salesMocks');
 
-describe('Unit tests for the model of products', function () {
+describe('Unit tests for the model of sales', function () {
   afterEach(function () {
     sinon.restore();
   });

@@ -38,4 +38,11 @@ describe('Unit tests for the service of products', function () {
     const result = await productsService.updateProduct(id, name);
     expect(result).to.be.deep.equal(productModded);
   });
+  it('should return a "done" status when deleting a product', async function () {
+    const id = 1;
+    sinon.stub(productsModel, 'deleteProduct').resolves('done');
+    sinon.stub(productsModel, 'getById').resolves(productModded);
+    const result = await productsService.deleteProduct(id);
+    expect(result).to.be.deep.equal('done');
+  });
 });
