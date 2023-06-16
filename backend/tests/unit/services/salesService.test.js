@@ -2,7 +2,7 @@ const { expect } = require('chai');
 const sinon = require('sinon');
 
 const { salesService } = require('../../../src/services/index');
-const { salesModel } = require('../../../src/models/index');
+const { salesModel, productsModel } = require('../../../src/models/index');
 
 const { salesMockList, salesMockId, addedSale } = require('./mocks/salesMocks');
 
@@ -32,6 +32,10 @@ describe('Unit tests for the service of sales', function () {
       },
     ];
     sinon.stub(salesModel, 'addSale').resolves(addedSale);
+    sinon.stub(productsModel, 'getById').resolves([{
+      id: 1,
+      name: 'Martelo de Thor',
+    }]);
     const result = await salesService.addSale(newSale);
     expect(result).to.be.deep.equal(addedSale);
   });
