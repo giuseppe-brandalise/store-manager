@@ -18,8 +18,14 @@ const addProduct = async (name) => {
   return connectionResponse[0];
 };
 
+const updateProduct = async (id, name) => {
+  await connection.execute('UPDATE products SET name = ? WHERE id = ?', [name, id]);
+  return getById(id);
+};
+
 module.exports = {
   getAll,
   getById,
   addProduct,
+  updateProduct,
 };

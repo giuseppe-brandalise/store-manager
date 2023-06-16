@@ -1,15 +1,17 @@
-const verifyAddProduct = (req, res, next) => {
+const { verifyNameExistence, verifyNameSize } = require('./schemas/productsSchemas');
+
+const verifyProductName = (req, res, next) => {
   const { name } = req.body;
 
-  if (!name) res.status(400).json({ message: '"name" is required' });
-
-  if (name.length < 5) {
-    return res.status(422).json({ message: '"name" length must be at least 5 characters long' });
+  try {
+    verifyNameExistence(name);
+    verifyNameSize(name);
+    next();
+  } catch (e) {
+    res.status(e.cause).json({ message: e.message });
   }
-
-  next();
 };
 
 module.exports = {
-    verifyAddProduct,
+  verifyProductName,
 };

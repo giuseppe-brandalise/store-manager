@@ -18,8 +18,16 @@ const addProduct = async (name) => {
   return modelResponse;
 };
 
+const updateProduct = async (id, name) => {
+  const verifyProduct = await productsModel.getById(id);
+  if (!verifyProduct) return 'product not found';
+  const modelResponse = await productsModel.updateProduct(id, name);
+  return modelResponse;
+};
+
 module.exports = {
   getAll,
   getById,
   addProduct,
+  updateProduct,
 };

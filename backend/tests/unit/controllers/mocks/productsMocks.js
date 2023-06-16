@@ -19,8 +19,14 @@ const productAdded = {
   name: 'ProdutoX',
 };
 
+const productModded = {
+  id: 1,
+  name: 'Martelo do Batman',
+};
+
 module.exports = {
   productsListMock,
   productIdMock,
   productAdded,
+  productModded,
 };
