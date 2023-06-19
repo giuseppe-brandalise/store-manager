@@ -39,4 +39,11 @@ describe('Unit tests for the service of sales', function () {
     const result = await salesService.addSale(newSale);
     expect(result).to.be.deep.equal(addedSale);
   });
+  it('should return a "done" status when deleting a sale', async function () {
+    const id = 1;
+    sinon.stub(salesModel, 'deleteSale').resolves('done');
+    sinon.stub(salesModel, 'getById').resolves(salesMockId);
+    const result = await salesService.deleteSale(id);
+    expect(result).to.be.deep.equal('done');
+  });
 });

@@ -120,4 +120,29 @@ describe('Unit tests for the controller of sales', function () {
     expect(res.json).to.have.been
       .calledWith({ message: '"quantity" must be greater than or equal to 1' });
   });
+  it('should return a 204 status when deleting a sale', async function () {
+    const res = {};
+    const req = {
+      params: 1,
+    };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(salesService, 'deleteSale').resolves('done');
+    sinon.stub(salesService, 'getById').resolves('done');
+    await salesController.deleteSale(req, res);
+    expect(res.status).to.have.been.calledWith(204);
+  });
+  it('should return sale not found when deleting a inexisting sale', async function () {
+    const res = {};
+    const req = {
+      params: 8,
+    };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(salesService, 'deleteSale').resolves('done');
+    sinon.stub(salesService, 'getById').resolves('sale not found');
+    await salesController.deleteSale(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+  });
 });

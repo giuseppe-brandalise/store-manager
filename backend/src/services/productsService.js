@@ -25,10 +25,10 @@ const updateProduct = async (id, name) => {
   return modelResponse;
 };
 
-const deleteProduct = async (id, name) => {
+const deleteProduct = async (id) => {
   const verifyProduct = await productsModel.getById(id);
   if (!verifyProduct) return 'product not found';
-  await productsModel.deleteProduct(id, name);
+  await productsModel.deleteProduct(id);
   return 'done';
 };
 

@@ -21,8 +21,16 @@ const addSale = async (sales) => {
   return modelResponse;
 };
 
+const deleteSale = async (id) => {
+  const verifySale = await salesModel.getById(id);
+  if (!verifySale) return 'sale not found';
+  await salesModel.deleteSale(id);
+  return 'done';
+};
+
 module.exports = {
   getAll,
   getById,
   addSale,
+  deleteSale,
 };

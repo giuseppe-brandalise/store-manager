@@ -40,7 +40,7 @@ describe('Unit tests for the model of products', function () {
   it('should return a "done" status when deleting a product', async function () {
     const id = 1;
     sinon.stub(connection, 'execute').resolves('done');
-    await productsModel.updateProduct(id);
+    await productsModel.deleteProduct(id);
     expect(connection.execute).to.have.been.calledWith();
   });
 });
