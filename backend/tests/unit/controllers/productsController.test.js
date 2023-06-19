@@ -7,6 +7,7 @@ chai.use(sinonChai);
 
 const { productsService } = require('../../../src/services/index');
 const { productsController } = require('../../../src/controllers/index');
+const productsMiddleware = require('../../../src/middlewares/productsMiddleware');
 
 const {
   productsListMock,
@@ -64,6 +65,37 @@ describe('Unit tests for the controller of products', function () {
     await productsController.addProduct(req, res);
     expect(res.status).to.have.been.calledWith(201);
     expect(res.json).to.have.been.calledWith(productAdded);
+  });
+  it('should not allow the adding process when there is no name', async function () {
+    const res = {};
+    const req = {
+      body: {
+        noName: true,
+      },
+    };
+    const next = sinon.stub().returns();
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    await productsMiddleware.verifyProductName(req, res, next);
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been
+      .calledWith({ message: '"name" is required' });
+  });
+  it(`should not allow the adding process when the name
+    is smaller then 5 letters`, async function () {
+    const res = {};
+    const req = {
+      body: {
+        name: 'name',
+      },
+    };
+    const next = sinon.stub().returns();
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    await productsMiddleware.verifyProductName(req, res, next);
+    expect(res.status).to.have.been.calledWith(422);
+    expect(res.json).to.have.been
+      .calledWith({ message: '"name" length must be at least 5 characters long' });
   });
   it('should return the updated product when send the name and the id', async function () {
     const res = {};

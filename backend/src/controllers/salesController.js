@@ -33,9 +33,24 @@ const deleteSale = async (req, res) => {
   return res.status(204).json();
 };
 
+const updateSale = async (req, res) => {
+  const { saleId, productId } = req.params;
+  const { quantity } = req.body;
+  const serviceResponce = await salesService.updateSale(saleId, productId, quantity);
+  switch (serviceResponce) {
+    case 'sale not found':
+      return res.status(404).json({ message: 'Sale not found' });
+    case 'product not found':
+      return res.status(404).json({ message: 'Product not found in sale' });
+    default:
+      return res.status(200).json(serviceResponce);
+  }
+};
+
 module.exports = { 
   getAll,
   getById,
   addSale,
   deleteSale,
+  updateSale,
 };

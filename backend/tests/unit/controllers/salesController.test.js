@@ -132,7 +132,7 @@ describe('Unit tests for the controller of sales', function () {
     await salesController.deleteSale(req, res);
     expect(res.status).to.have.been.calledWith(204);
   });
-  it('should return sale not found when deleting a inexisting sale', async function () {
+  it('should return sale not found when deleting an inexisting sale', async function () {
     const res = {};
     const req = {
       params: 8,
@@ -144,5 +144,78 @@ describe('Unit tests for the controller of sales', function () {
     await salesController.deleteSale(req, res);
     expect(res.status).to.have.been.calledWith(404);
     expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+  });
+  it('should return sale not found when updating an inexisting sale', async function () {
+    const res = {};
+    const req = {
+      params: {
+        saleId: 1,
+        productId: 1,
+      },
+      body: {
+        quantity: 1,
+      },
+    };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(salesService, 'updateSale').resolves('sale not found');
+    await salesController.updateSale(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Sale not found' });
+  });
+  it('should return product not found when updating an inexisting product', async function () {
+    const res = {};
+    const req = {
+      params: {
+        saleId: 1,
+        productId: 1,
+      },
+      body: {
+        quantity: 1,
+      },
+    };
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    sinon.stub(salesService, 'updateSale').resolves('product not found');
+    await salesController.updateSale(req, res);
+    expect(res.status).to.have.been.calledWith(404);
+    expect(res.json).to.have.been.calledWith({ message: 'Product not found in sale' });
+  });
+  it('should not allow the updating process when there in no quantity', async function () {
+    const res = {};
+    const req = {
+      params: {
+        saleId: 1,
+        productId: 1,
+      },
+      body: {
+        noQuantity: true,
+      },
+    };
+    const next = sinon.stub().returns();
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    await salesMiddleware.verifyUpdateSale(req, res, next);
+    expect(res.status).to.have.been.calledWith(400);
+    expect(res.json).to.have.been.calledWith({ message: '"quantity" is required' });
+  });
+  it('should not allow the updating process when quantity is zero or bellow', async function () {
+    const res = {};
+    const req = {
+      params: {
+        saleId: 1,
+        productId: 1,
+      },
+      body: {
+        quantity: 0,
+      },
+    };
+    const next = sinon.stub().returns();
+    res.status = sinon.stub().returns(res);
+    res.json = sinon.stub().returns();
+    await salesMiddleware.verifyUpdateSale(req, res, next);
+    expect(res.status).to.have.been.calledWith(422);
+    expect(res.json).to.have.been
+      .calledWith({ message: '"quantity" must be greater than or equal to 1' });
   });
 });

@@ -12,4 +12,7 @@ salesRouter.post('/', salesMiddleware.verifyAddSale, salesController.addSale);
 
 salesRouter.delete('/:id', salesController.deleteSale);
 
+salesRouter.put('/:saleId/products/:productId/quantity', salesMiddleware
+  .verifyUpdateSale, salesController.updateSale);
+
 module.exports = salesRouter;

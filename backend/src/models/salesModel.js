@@ -26,7 +26,6 @@ const getById = async (id) => {
 
 const addSale = async (sales) => {
   const [{ insertId }] = await connection.execute('INSERT INTO sales (date) VALUES (NOW())');
-  console.log(insertId);
   await Promise.all(sales.map(async (sale) => {
     await connection.execute(
       `INSERT INTO sales_products
@@ -41,8 +40,26 @@ const addSale = async (sales) => {
 };
 
 const deleteSale = async (id) => {
-  console.log(id);
   await connection.execute('DELETE FROM sales  WHERE id = ?', [id]);
+};
+
+const updateSale = async (saleId, productId, quantity) => {
+  await connection.execute(
+    'UPDATE sales_products SET quantity = ? WHERE sale_id = ? AND product_id = ?',
+    [quantity, saleId, productId],
+    );
+  const [[connectionResponse]] = await connection.execute(
+    `SELECT sp.sale_id AS saleId,
+    sp.product_id AS productId,
+    sp.quantity,
+    sl.date
+    FROM sales_products AS sp
+    INNER JOIN sales AS sl ON sl.id = sp.sale_id AND sp.product_id = ? AND sale_id = ?
+    `,
+    [productId, saleId],
+  );
+  console.log(connectionResponse);
+  return connectionResponse;
 };
 
 module.exports = {
@@ -50,4 +67,5 @@ module.exports = {
   getById,
   addSale,
   deleteSale,
+  updateSale,
 };

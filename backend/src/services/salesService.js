@@ -28,9 +28,19 @@ const deleteSale = async (id) => {
   return 'done';
 };
 
+const updateSale = async (saleId, productId, quantity) => {
+  const verifySale = await salesModel.getById(saleId);
+  if (!verifySale[0]) return 'sale not found';
+  const verifyProduct = verifySale.filter((product) => product.productId === Number(productId));
+  if (!verifyProduct[0]) return 'product not found';
+  const modelResponse = await salesModel.updateSale(saleId, productId, quantity);
+  return modelResponse;
+};
+
 module.exports = {
   getAll,
   getById,
   addSale,
   deleteSale,
+  updateSale,
 };

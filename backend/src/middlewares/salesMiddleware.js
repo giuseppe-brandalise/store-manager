@@ -19,6 +19,18 @@ const verifyAddSale = (req, res, next) => {
   }
 };
 
+const verifyUpdateSale = (req, res, next) => {
+  const quantity = req.body;
+  try {
+    verifyQuantitySize(quantity);
+    verifyQuantityExistence(quantity);
+    next();
+  } catch (e) {
+    res.status(e.cause).json({ message: e.message });
+  }
+};
+
 module.exports = {
   verifyAddSale,
+  verifyUpdateSale,
 };
